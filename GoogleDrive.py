@@ -1,4 +1,4 @@
-from google.colab import auth
+
 from googleapiclient.discovery import build
 import googleapiclient.http
 
@@ -6,7 +6,6 @@ import googleapiclient.http
 
 class GoogleDrive:    
         def __init__(self):      
-            auth.authenticate_user()
             self.drive_service = build('drive', 'v3')
             self.folderid = '1LMtx_J7CPqi09mL5lA4RBeZXGZlePiGE'
             self.userid = None
