@@ -1,6 +1,7 @@
 from ipywidgets import *
-from IPython.display import clear_output
+from IPython.display import clear_output, display
 from ProgrammingQuestion import ProgrammingQuestion
+import importlib
 
 class VisualManager():
     def __init__(self, drive, online_version):
@@ -22,6 +23,7 @@ class VisualManager():
         self.writtenresp = widgets.Textarea(value='')
         self.writtenresp.layout.visibility = 'hidden'
         self.writtenresp.layout.display = 'none'
+        self.component_output = widgets.Output()
         self.display_only_answer = widgets.HTML()
         self.display_only_answer.layout.visibility = 'hidden'
         self.display_only_answer.layout.display = 'none'
@@ -31,10 +33,11 @@ class VisualManager():
         self.check = widgets.Button(description="Submit")
         self.check.on_click(self.check_selection)
         self.currentQuiz = None
+        self.components_ui = {}
 
         #quiz tab
         hboxleft = VBox(children=[self.Qname,self.Qqsts],layout=Layout(width = '15%'))
-        qvbox = VBox(children=[self.description_out,self.qans_lbl,self.writtenresp,self.display_only_answer,self.choices])
+        qvbox = VBox(children=[self.description_out,self.qans_lbl,self.writtenresp,self.display_only_answer,self.choices, self.component_output])
 
         hboxmiddle = VBox(children=[qvbox,HBox(children=[self.check],layout=Layout(align_items='stretch')),self.feedback_out],layout=Layout(width = '75%'))
         hboxright = HBox(children=[VBox(children=[])],layout=Layout(width = '15%'))
@@ -70,6 +73,20 @@ class VisualManager():
 
           return None
 
+    def get_component_ui(self, component_name, question_name):
+        saved_component_name = component_name + "_" + question_name
+        if saved_component_name in self.components_ui:
+            return self.components_ui[saved_component_name]
+        else:
+            component_path = f"components.{component_name}Component.{component_name}Component"
+            class_name = f"{component_name}Component"
+            module = importlib.import_module(component_path)
+            component_class = getattr(module, class_name)
+            component = component_class(self)
+            ui = component.get_ui()
+            self.components_ui[saved_component_name] = ui
+            return ui   
+    
     def open_question(self, b):
         BOLD = '\033[1m'
         RESET = '\033[0m'
@@ -86,7 +103,7 @@ class VisualManager():
             QText = self.currentQuiz.getCurrentQuestion().getText()
             autofill_answer = self.get_autofill_answer(Qtitle)
             with self.description_out:
-                clear_output()
+                clear_output(wait=True)
                 print(f"""{BOLD}{Qtitle}{RESET}""")
                 print("_______________________________")
                 print(QText)
@@ -128,6 +145,8 @@ class VisualManager():
 
                 self.writtenresp.layout.visibility = 'hidden'
                 self.writtenresp.layout.display = 'none'
+                self.component_output.layout.visibility = 'hidden'
+                self.component_output.layout.display = 'none'
 
                 if autofill_answer is not None and autofill_answer != 'None':
                   self.display_only_answer.value = autofill_answer
@@ -155,14 +174,40 @@ class VisualManager():
                 self.display_only_answer.layout.visibility = 'hidden'
                 self.display_only_answer.layout.display = 'none'
 
+                self.component_output.layout.visibility = 'hidden'
+                self.component_output.layout.display = 'none'
+
+            if self.currentQuiz.getCurrentQuestion().isCustomQuestion():
+                self.qans_lbl.layout.visibility = 'hidden'
+                self.qans_lbl.layout.display = 'none'
+
+                self.writtenresp.layout.visibility = 'hidden'
+                self.writtenresp.layout.display = 'none'
+
+                self.choices.layout.visibility = 'hidden'
+                self.choices.layout.display = 'none'
+
+                self.display_only_answer.layout.visibility = 'hidden'
+                self.display_only_answer.layout.display = 'none'
+
+                self.component_output.layout.display = 'block'
+                self.component_output.layout.visibility = 'visible'
+
+                question_name = self.currentQuiz.getCurrentQuestion().getTitle()
+                component_name = self.currentQuiz.getCurrentQuestion().get_component_name()
+                component_ui = self.get_component_ui(component_name, question_name)
+                with self.component_output:
+                    clear_output(wait=True)
+                    display(component_ui)
+                
 
             with self.feedback_out:
-                clear_output()
+                clear_output(wait=True)
 
         except Exception as e:
 
             with self.feedback_out:
-                clear_output()
+                clear_output(wait=True)
                 print('open quest error .. '+str(e))
 
         return
@@ -212,7 +257,7 @@ class VisualManager():
             answer_object = self.get_open_or_mchoice_answer_object(a, "open", True)
 
         with self.feedback_out:
-            clear_output()
+            clear_output(wait=True)
             if not self.currentQuiz.getCurrentQuestion().IsMChoice():
                 print('Correct Answer: ')
             else:
@@ -228,6 +273,10 @@ class VisualManager():
           self.display_only_answer.value = autofill_answer
 
         self.drive.upload_log( question_title + ".json")
-
-
         return
+    
+    def submit_answer(self, answer):
+        question = self.currentQuiz.getCurrentQuestion().getTitle()
+        self.drive.write_answer_to_file(answer,question + '.json')
+        self.drive.upload_log(question + '.json')
+    

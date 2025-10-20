@@ -1,5 +1,5 @@
 class Question():
-    def __init__(self, title, text,mchoice):
+    def __init__(self, title, text,mchoice, component):
         self.title = title
         self.text = text
         self.type = mchoice
@@ -7,6 +7,7 @@ class Question():
         self.tests = []
         self.keywords = []
         self.correctchoice = None
+        self.component = component
 
     def getTitle(self):
         return self.title
@@ -35,8 +36,14 @@ class Question():
     def IsMChoice(self):
         return self.type == 'multiple_choice'
 
+    def isCustomQuestion(self):
+        return self.type == 'custom'
+
     def isProgrammingQuestion(self):
         return self.type == 'programming'
 
     def isOpenQuestion(self):
         return self.type == 'open'
+    
+    def get_component_name(self):
+        return self.component

@@ -2,17 +2,17 @@
     "type": "programming",
     "result": {
         "2": {
-            "result": 18,
+            "result": 396,
             "expected": 4,
             "correct": false
         },
         "3": {
-            "result": 27,
+            "result": 594,
             "expected": 9,
             "correct": false
         },
         "4": {
-            "result": 36,
+            "result": 792,
             "expected": 16,
             "correct": false
         }
@@ -21,6 +21,6 @@
     "total_keywords": 3,
     "answer": [
         "def square(x):\n",
-        "    return x*9"
+        "    return x*9*22"
     ]
 }
