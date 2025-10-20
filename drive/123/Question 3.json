@@ -1,0 +1,26 @@
+{
+    "type": "programming",
+    "result": {
+        "2": {
+            "result": 4,
+            "expected": 4,
+            "correct": true
+        },
+        "3": {
+            "result": 9,
+            "expected": 9,
+            "correct": true
+        },
+        "4": {
+            "result": 16,
+            "expected": 16,
+            "correct": true
+        }
+    },
+    "correct_keywords": 0,
+    "total_keywords": 3,
+    "answer": [
+        "def square(x):\n",
+        "    return x*x"
+    ]
+}
