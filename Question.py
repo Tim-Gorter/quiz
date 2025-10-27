@@ -1,5 +1,5 @@
 class Question():
-    def __init__(self, title, text,mchoice, component):
+    def __init__(self, title, text,mchoice, component, parameters=None):
         self.title = title
         self.text = text
         self.type = mchoice
@@ -8,6 +8,7 @@ class Question():
         self.keywords = []
         self.correctchoice = None
         self.component = component
+        self.parameters = parameters
 
     def getTitle(self):
         return self.title
@@ -47,3 +48,6 @@ class Question():
     
     def get_component_name(self):
         return self.component
+    
+    def get_parameters(self):
+        return self.parameters

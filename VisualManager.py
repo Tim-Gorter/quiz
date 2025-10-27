@@ -73,7 +73,7 @@ class VisualManager():
 
           return None
 
-    def get_component_ui(self, component_name, question_name):
+    def get_component_ui(self, component_name, question_name, parameters):
         saved_component_name = component_name + "_" + question_name
         if saved_component_name in self.components_ui:
             return self.components_ui[saved_component_name]
@@ -82,7 +82,12 @@ class VisualManager():
             class_name = f"{component_name}Component"
             module = importlib.import_module(component_path)
             component_class = getattr(module, class_name)
-            component = component_class(self)
+
+            if parameters is None:
+                component = component_class(self)
+            else:
+                component = component_class(self, *parameters) 
+
             ui = component.get_ui()
             self.components_ui[saved_component_name] = ui
             return ui   
@@ -98,119 +103,129 @@ class VisualManager():
         if self.currentQuiz.getCurrentQuestion() is None:
            return
 
-        try:
-            Qtitle = self.currentQuiz.getCurrentQuestion().getTitle()
-            QText = self.currentQuiz.getCurrentQuestion().getText()
-            autofill_answer = self.get_autofill_answer(Qtitle)
-            with self.description_out:
-                clear_output(wait=True)
-                print(f"""{BOLD}{Qtitle}{RESET}""")
-                print("_______________________________")
-                print(QText)
-                print()
+        # try:
+        Qtitle = self.currentQuiz.getCurrentQuestion().getTitle()
+        QText = self.currentQuiz.getCurrentQuestion().getText()
+        autofill_answer = self.get_autofill_answer(Qtitle)
+        with self.description_out:
+            clear_output(wait=True)
+            print(f"""{BOLD}{Qtitle}{RESET}""")
+            print("_______________________________")
+            print(QText)
+            print()
 
-            if self.currentQuiz.getCurrentQuestion().IsMChoice():
-                self.choices.layout.display = 'block'
-                self.choices.layout.visibility = 'visible'
-
-
-                self.qans_lbl.layout.visibility = 'hidden'
-                self.qans_lbl.layout.display = 'none'
-
-                self.writtenresp.layout.visibility = 'hidden'
-                self.writtenresp.layout.display = 'none'
-
-                self.display_only_answer.layout.visibility = 'hidden'
-                self.display_only_answer.layout.display = 'none'
+        if self.currentQuiz.getCurrentQuestion().IsMChoice():
+            self.choices.layout.display = 'block'
+            self.choices.layout.visibility = 'visible'
 
 
-                chopts = []
+            self.qans_lbl.layout.visibility = 'hidden'
+            self.qans_lbl.layout.display = 'none'
 
-                for choice in self.currentQuiz.getCurrentQuestion().getChoices():
-                    chopts.append(choice[0])
+            self.writtenresp.layout.visibility = 'hidden'
+            self.writtenresp.layout.display = 'none'
 
-                self.choices.options = [x for x in chopts]
-                if autofill_answer is not None and autofill_answer != 'None':
-                  self.choices.value = autofill_answer
+            self.display_only_answer.layout.visibility = 'hidden'
+            self.display_only_answer.layout.display = 'none'
 
-            if self.currentQuiz.getCurrentQuestion().isProgrammingQuestion():
-                self.qans_lbl.layout.display = 'block'
-                self.qans_lbl.layout.visibility = 'visible'
 
-                self.choices.layout.display = 'none'
-                self.choices.layout.visibility = 'hidden'
+            chopts = []
 
-                self.choices.layout.visibility = 'hidden'
-                self.choices.layout.display = 'none'
+            for choice in self.currentQuiz.getCurrentQuestion().getChoices():
+                chopts.append(choice[0])
 
-                self.writtenresp.layout.visibility = 'hidden'
-                self.writtenresp.layout.display = 'none'
-                self.component_output.layout.visibility = 'hidden'
-                self.component_output.layout.display = 'none'
+            self.choices.options = [x for x in chopts]
+            if autofill_answer is not None and autofill_answer != 'None':
+                self.choices.value = autofill_answer
 
-                if autofill_answer is not None and autofill_answer != 'None':
-                  self.display_only_answer.value = autofill_answer
-                else:
-                  self.display_only_answer.value = '<body><font color="green">Enter your answer in the cell below.</font></body>'
+        if self.currentQuiz.getCurrentQuestion().isProgrammingQuestion():
+            self.qans_lbl.layout.display = 'block'
+            self.qans_lbl.layout.visibility = 'visible'
 
-                self.display_only_answer.layout.visibility = 'visible'
-                self.display_only_answer.layout.display = 'block'
+            self.choices.layout.display = 'none'
+            self.choices.layout.visibility = 'hidden'
 
-            if self.currentQuiz.getCurrentQuestion().isOpenQuestion():
-                if autofill_answer is not None and autofill_answer != 'None':
-                    self.writtenresp.value = autofill_answer
-                else:
-                  self.writtenresp.value = ''
-
-                self.qans_lbl.layout.display = 'block'
-                self.qans_lbl.layout.visibility = 'visible'
-
-                self.writtenresp.layout.display = 'block'
-                self.writtenresp.layout.visibility = 'visible'
-
-                self.choices.layout.visibility = 'hidden'
-                self.choices.layout.display = 'none'
-
-                self.display_only_answer.layout.visibility = 'hidden'
-                self.display_only_answer.layout.display = 'none'
-
-                self.component_output.layout.visibility = 'hidden'
-                self.component_output.layout.display = 'none'
-
-            if self.currentQuiz.getCurrentQuestion().isCustomQuestion():
-                self.qans_lbl.layout.visibility = 'hidden'
-                self.qans_lbl.layout.display = 'none'
-
-                self.writtenresp.layout.visibility = 'hidden'
-                self.writtenresp.layout.display = 'none'
-
-                self.choices.layout.visibility = 'hidden'
-                self.choices.layout.display = 'none'
-
-                self.display_only_answer.layout.visibility = 'hidden'
-                self.display_only_answer.layout.display = 'none'
-
-                self.component_output.layout.display = 'block'
-                self.component_output.layout.visibility = 'visible'
-
-                question_name = self.currentQuiz.getCurrentQuestion().getTitle()
-                component_name = self.currentQuiz.getCurrentQuestion().get_component_name()
-                component_ui = self.get_component_ui(component_name, question_name)
-                with self.component_output:
-                    clear_output(wait=True)
-                    display(component_ui)
+            self.choices.layout.visibility = 'hidden'
+            self.choices.layout.display = 'none'
                 
+            self.check.layout.display = 'block'
+            self.check.layout.visibility = 'visible'
 
-            with self.feedback_out:
+            self.writtenresp.layout.visibility = 'hidden'
+            self.writtenresp.layout.display = 'none'
+            self.component_output.layout.visibility = 'hidden'
+            self.component_output.layout.display = 'none'
+
+            if autofill_answer is not None and autofill_answer != 'None':
+                self.display_only_answer.value = autofill_answer
+            else:
+                self.display_only_answer.value = '<body><font color="green">Enter your answer in the cell below.</font></body>'
+
+            self.display_only_answer.layout.visibility = 'visible'
+            self.display_only_answer.layout.display = 'block'
+
+        if self.currentQuiz.getCurrentQuestion().isOpenQuestion():
+            if autofill_answer is not None and autofill_answer != 'None':
+                self.writtenresp.value = autofill_answer
+            else:
+                self.writtenresp.value = ''
+
+            self.qans_lbl.layout.display = 'block'
+            self.qans_lbl.layout.visibility = 'visible'
+
+            self.writtenresp.layout.display = 'block'
+            self.writtenresp.layout.visibility = 'visible'
+
+            self.choices.layout.visibility = 'hidden'
+            self.choices.layout.display = 'none'
+
+            self.display_only_answer.layout.visibility = 'hidden'
+            self.display_only_answer.layout.display = 'none'
+
+            self.component_output.layout.visibility = 'hidden'
+            self.component_output.layout.display = 'none'
+
+            self.check.layout.display = 'block'
+            self.check.layout.visibility = 'visible'
+
+        if self.currentQuiz.getCurrentQuestion().isCustomQuestion():
+            self.qans_lbl.layout.visibility = 'hidden'
+            self.qans_lbl.layout.display = 'none'
+
+            self.writtenresp.layout.visibility = 'hidden'
+            self.writtenresp.layout.display = 'none'
+
+            self.choices.layout.visibility = 'hidden'
+            self.choices.layout.display = 'none'
+
+            self.display_only_answer.layout.visibility = 'hidden'
+            self.display_only_answer.layout.display = 'none'
+
+            self.component_output.layout.display = 'block'
+            self.component_output.layout.visibility = 'visible'
+
+            self.check.layout.visibility = 'hidden'
+            self.check.layout.display = 'none'
+
+            question_name = self.currentQuiz.getCurrentQuestion().getTitle()
+            component_name = self.currentQuiz.getCurrentQuestion().get_component_name()
+            parameters = self.currentQuiz.getCurrentQuestion().get_parameters()
+            component_ui = self.get_component_ui(component_name, question_name,parameters)
+            with self.component_output:
                 clear_output(wait=True)
+                display(component_ui)
+            
 
-        except Exception as e:
+        with self.feedback_out:
+            clear_output(wait=True)
 
-            with self.feedback_out:
-                clear_output(wait=True)
-                print('open quest error .. '+str(e))
+        # except Exception as e:
 
-        return
+        #     with self.feedback_out:
+        #         clear_output(wait=True)
+        #         print('open quest error .. '+str(e))
+
+        # return
     ##############################################################################################################
 
     def get_open_or_mchoice_answer_object(self,answer, question_type, correct):
