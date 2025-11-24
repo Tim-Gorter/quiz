@@ -12,8 +12,7 @@ class MLDashboard:
     def __init__(self,drive, online_version):
         self.clone()
         sys.path.append("components/MLDashboardComponent")
-        os.chdir('./components/MLDashboardComponent')
-        from components.MLDashboardComponent.controller.controller import Controller
+        from controller.controller import Controller
         self.controller = Controller(drive, online_version)
         
     def get_ui(self):
