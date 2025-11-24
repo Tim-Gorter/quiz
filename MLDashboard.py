@@ -9,7 +9,7 @@ import sys
 
 class MLDashboard:
     def __init__(self,drive, online_version):
-        os.system("git clone https://github.com/muratfirat78/ML_Dashboard components/MLDashboardComponent &> /dev/null")
+        !git clone https://github.com/muratfirat78/ML_Dashboard components/MLDashboardComponent
         sys.path.append("components/MLDashboardComponent")
         os.chdir('./components/MLDashboardComponent')
         from components.MLDashboardComponent.controller.controller import Controller
