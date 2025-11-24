@@ -6,10 +6,11 @@ from ipywidgets import *
 import warnings
 import os
 import sys
+import subprocess
 
 class MLDashboard:
     def __init__(self,drive, online_version):
-        !git clone https://github.com/muratfirat78/ML_Dashboard components/MLDashboardComponent
+        self.clone()
         sys.path.append("components/MLDashboardComponent")
         os.chdir('./components/MLDashboardComponent')
         from components.MLDashboardComponent.controller.controller import Controller
@@ -18,3 +19,15 @@ class MLDashboard:
     def get_ui(self):
         ui = self.controller.get_ui()
         return ui
+    
+    def clone(self):
+        target_dir = "components/MLDashboardComponent"
+
+        try:
+            result = subprocess.run(
+                ["git", "clone", "https://github.com/muratfirat78/ML_Dashboard", target_dir],
+                capture_output=True, text=True, check=True
+            )
+            print(result.stdout)
+        except subprocess.CalledProcessError as e:
+            print(e.stderr)
