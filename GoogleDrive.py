@@ -44,18 +44,18 @@ class GoogleDrive:
             while done is False:
                 status, done = downloader.next_chunk()
 
-        def get_performances(self):
-            folderid = self.get_folder(self.userid)
+        def get_performances(self,userid):
+            folderid = self.get_folder(userid)
             query = f"'{folderid}' in parents and trashed=false"
             results = self.drive_service.files().list(q=query, fields="files(id, name)").execute()
             files = results.get('files', [])
-
-            if not os.path.exists('/content/drive/' + str(self.userid)):
-                os.makedirs('/content/drive/' + str(self.userid))
-
+            
+            if not os.path.exists('/content/ML_Dashboard/drive/' + str(userid)):
+                os.makedirs('/content/ML_Dashboard/drive/' + str(userid))
+            
             for file in files:
-                if not os.path.exists('./drive/' + str(self.userid) + '/' + file['name']):
-                    self.download(file['id'], file['name'], self.userid)
+                if not os.path.exists('./drive/' + userid + '/' + file['name']):
+                    self.download(file['id'], file['name'], userid)
 
         def login_correct(self,userid):
             query = f"name='{userid}' and '{self.folderid}' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false"
