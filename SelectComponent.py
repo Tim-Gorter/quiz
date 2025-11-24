@@ -7,7 +7,7 @@ class SelectComponent:
         self.visualManager = visualManager
         questionlist = QuestionsList()
         self.component_list = widgets.Dropdown(
-            options=questionlist.get_components(),
+            options=questionlist.get_components() + ["ML Dashboard"],
             disabled=False
         )
         
@@ -29,4 +29,7 @@ class SelectComponent:
         
     
     def start_quiz(self, value):
-        self.visualManager.start_quiz(self.component_list.value)
+        if self.component_list.value == "ML Dashboard":
+            self.visualManager.start_ml_dashboard()
+        else:
+            self.visualManager.start_quiz(self.component_list.value)

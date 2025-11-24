@@ -1,3 +1,4 @@
+from MLDashboard import MLDashboard
 from SelectComponent import SelectComponent
 from ipywidgets import *
 from IPython.display import clear_output, display
@@ -61,6 +62,10 @@ class VisualManager():
         self.setQuiz(currentQuiz)
         self.getQsts().options = [x.getTitle() for x in currentQuiz.getQuestions()]
         self.ui.children = [display_output]
+        
+    def start_ml_dashboard(self):
+        ml_dasbhoard = MLDashboard(self.drive, self.online_version)
+        self.ui.children = [ml_dasbhoard.get_ui()]
     
     def setQuiz(self, quiz):
         self.currentQuiz = quiz
