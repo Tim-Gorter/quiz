@@ -1,7 +1,9 @@
+from SelectComponent import SelectComponent
 from ipywidgets import *
 from IPython.display import clear_output, display
 from ProgrammingQuestion import ProgrammingQuestion
 import importlib
+from Quiz import Quiz
 
 class VisualManager():
     def __init__(self, drive, online_version):
@@ -34,6 +36,8 @@ class VisualManager():
         self.check.on_click(self.check_selection)
         self.currentQuiz = None
         self.components_ui = {}
+        self.selectComponent = SelectComponent(self)
+        self.ui = VBox([])
 
         #quiz tab
         hboxleft = VBox(children=[self.Qname,self.Qqsts],layout=Layout(width = '15%'))
@@ -45,6 +49,19 @@ class VisualManager():
         self.QuizTab = VBox([self.userid_display,
                              HBox([hboxleft,hboxmiddle,hboxright])
                              ])
+    
+    def get_ui(self):
+        ui = self.selectComponent.get_ui()
+        self.ui = ui
+        return self.ui
+
+    def start_quiz(self, component):
+        display_output = self.getQuizTab()
+        currentQuiz = Quiz.open_quiz(display_output, component)
+        self.setQuiz(currentQuiz)
+        self.getQsts().options = [x.getTitle() for x in currentQuiz.getQuestions()]
+        self.ui.children = [display_output]
+    
     def setQuiz(self, quiz):
         self.currentQuiz = quiz
 
