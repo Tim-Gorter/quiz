@@ -8,7 +8,7 @@ import io
 import time
 import numpy as np
 import google_auth_httplib2
-
+from google.auth import default
 
 class GoogleDrive:    
         def __init__(self):      
