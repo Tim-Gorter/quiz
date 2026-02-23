@@ -19,6 +19,16 @@ class GoogleDrive:
             self.get_performances()
             logging.getLogger("google_auth_httplib2").setLevel(logging.ERROR)
 
+        def _json_safe(self, obj):
+            if isinstance(obj, np.integer):
+                return int(obj)
+            if isinstance(obj, np.floating):
+                return float(obj)
+            if isinstance(obj, np.ndarray):
+                return obj.tolist()
+            
+            return str(obj)
+
         def get_folder(self, userid):
             query = f"name='{userid}' and '{self.folderid}' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false"
             max_retries = 5
