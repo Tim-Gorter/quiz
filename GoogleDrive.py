@@ -56,18 +56,32 @@ class GoogleDrive:
             while done is False:
                 status, done = downloader.next_chunk()
 
-        def get_performances(self):
+        def get_performances(self, progress_callback=None):
             folderid = self.get_folder(self.userid)
             query = f"'{folderid}' in parents and trashed=false"
-            results = self.drive_service.files().list(q=query, fields="files(id, name)").execute()
+            results = self.drive_service.files().list(q=query, fields="files(id, name, modifiedTime)").execute()
             files = results.get('files', [])
 
-            if not os.path.exists('/content/drive/' + str(self.userid)):
-                os.makedirs('/content/drive/' + str(self.userid))
+            os.makedirs(f'./drive/{self.userid}', exist_ok=True)
 
-            for file in files:
-                if not os.path.exists('./drive/' + str(self.userid) + '/' + file['name']):
+            total_files = len(files)
+            for i, file in enumerate(files, start=1):
+                local_path = f'./drive/{self.userid}/{file["name"]}'
+
+                download_file = False
+                if not os.path.exists(local_path):
+                    download_file = True
+                else:
+                    local_mtime = os.path.getmtime(local_path)
+                    drive_mtime = time.mktime(time.strptime(file['modifiedTime'], "%Y-%m-%dT%H:%M:%S.%fZ"))
+                    if drive_mtime > local_mtime:
+                        download_file = True
+
+                if download_file:
                     self.download(file['id'], file['name'], self.userid)
+
+                if progress_callback:
+                    progress_callback(i, total_files)
 
         def login_correct(self,userid):
             query = f"name='{userid}' and '{self.folderid}' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false"
