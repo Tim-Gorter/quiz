@@ -7,6 +7,7 @@ import random
 import io
 import time
 import numpy as np
+import logging
 
 
 class GoogleDrive:    
@@ -16,6 +17,7 @@ class GoogleDrive:
             self.userid = None
             self.userid = self.register()
             self.get_performances()
+            logging.getLogger("google_auth_httplib2").setLevel(logging.ERROR)
 
         def get_folder(self, userid):
             query = f"name='{userid}' and '{self.folderid}' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false"
