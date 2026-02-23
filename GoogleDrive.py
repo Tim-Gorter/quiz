@@ -8,16 +8,22 @@ import io
 import time
 import numpy as np
 import logging
+import datetime
+import threading
 
 
 class GoogleDrive:    
-        def __init__(self):      
+        def __init__(self, visualManager):      
             self.drive_service = build('drive', 'v3')
             self.folderid = '1c8V2zmEV3GJbOiKT6z61LkZyS8cIPDPE'
             self.userid = None
             self.userid = self.register()
             self.get_performances()
+            self.visualManager = visualManager
             logging.getLogger("google_auth_httplib2").setLevel(logging.ERROR)
+
+        def update_status(self, text):
+            self.visualManager.download_status.value = text
 
         def _json_safe(self, obj):
             if isinstance(obj, np.integer):
@@ -56,32 +62,62 @@ class GoogleDrive:
             while done is False:
                 status, done = downloader.next_chunk()
 
-        def get_performances(self, progress_callback=None):
+        def get_performances(self):
             folderid = self.get_folder(self.userid)
             query = f"'{folderid}' in parents and trashed=false"
-            results = self.drive_service.files().list(q=query, fields="files(id, name, modifiedTime)").execute()
+            results = self.drive_service.files().list(q=query, fields="files(id, name)").execute()
             files = results.get('files', [])
 
-            os.makedirs(f'./drive/{self.userid}', exist_ok=True)
+            if not os.path.exists('/content/drive/' + str(self.userid)):
+                os.makedirs('/content/drive/' + str(self.userid))
 
-            total_files = len(files)
-            for i, file in enumerate(files, start=1):
-                local_path = f'./drive/{self.userid}/{file["name"]}'
-
-                download_file = False
-                if not os.path.exists(local_path):
-                    download_file = True
-                else:
-                    local_mtime = os.path.getmtime(local_path)
-                    drive_mtime = time.mktime(time.strptime(file['modifiedTime'], "%Y-%m-%dT%H:%M:%S.%fZ"))
-                    if drive_mtime > local_mtime:
-                        download_file = True
-
-                if download_file:
+            for file in files:
+                if not os.path.exists('./drive/' + str(self.userid) + '/' + file['name']):
                     self.download(file['id'], file['name'], self.userid)
 
-                if progress_callback:
-                    progress_callback(i, total_files)
+        def get_performances_master(self):
+            query = f"'{self.folderid}' in parents and trashed=false"
+            results = self.drive_service.files().list(q=query, fields="files(id, name)").execute()
+            folders = results.get('files', [])
+
+            total_files = sum(
+                len(self.drive_service.files().list(q=f"'{folder['id']}' in parents and trashed=false",
+                                                    fields="files(id)").execute().get('files', []))
+                for folder in folders
+            )
+            downloaded_files = 0
+
+            save_path = '/content/drive/'
+            if not os.path.exists(save_path):
+                os.makedirs(save_path)
+
+            for folder in folders:
+                if not os.path.exists(os.path.join(save_path, folder['name'])):
+                    os.makedirs(os.path.join(save_path, folder['name']))
+                query = f"'{folder['id']}' in parents and trashed=false"
+                results2 = self.drive_service.files().list(q=query, fields="files(id, name, modifiedTime)").execute()
+                files = results2.get('files', [])
+                for file in files:
+                    download_file = False
+                    file_location = os.path.join(save_path,folder['name'], file['name'])
+                    if os.path.exists(file_location):
+                        #already exists, check if it needs to be updated
+                        last_edited_local = datetime.fromtimestamp(os.path.getmtime(file_location))
+                        last_edited_drive = datetime.fromisoformat(file['modifiedTime'].replace('Z', '+00:00')).replace(tzinfo=None)
+                        if last_edited_local < last_edited_drive:
+                            download_file = True
+                    else:
+                        #File does not exist yet
+                        download_file = True
+                    if download_file:
+                        # self.download(file['id'], file['name'], folder['name'])
+                        threading.Thread(target=self.download(file['id'], file['name'], folder['name'])).start()
+
+
+                    downloaded_files += 1
+                    self.update_status(f"Download status: {downloaded_files}/{total_files} files downloaded")
+
+            self.update_status("Download finished")
 
         def login_correct(self,userid):
             query = f"name='{userid}' and '{self.folderid}' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false"
@@ -172,3 +208,4 @@ class GoogleDrive:
             def set_userid(self,userid):
                 self.userid = userid
                 return
+            
