@@ -7,17 +7,11 @@ import random
 import io
 import time
 import numpy as np
-import google_auth_httplib2
-from google.auth import default
-import httplib2
+
 
 class GoogleDrive:    
         def __init__(self):      
-            credentials, _ = default()
-            http = httplib2.Http(timeout=60) 
-            authed_http = google_auth_httplib2.AuthorizedHttp(credentials, http=http)
-
-            self.drive_service = build('drive', 'v3', http=authed_http)
+            self.drive_service = build('drive', 'v3')
             self.folderid = '1c8V2zmEV3GJbOiKT6z61LkZyS8cIPDPE'
             self.userid = None
             self.userid = self.register()
