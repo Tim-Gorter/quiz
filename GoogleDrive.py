@@ -11,7 +11,10 @@ import numpy as np
 
 class GoogleDrive:    
         def __init__(self):      
-            self.drive_service = build('drive', 'v3')
+            http = httplib2.Http(timeout=60) 
+            authed_http = google_auth_httplib2.AuthorizedHttp(credentials, http=http)
+
+            self.drive_service = build('drive', 'v3', http=authed_http)
             self.folderid = '1c8V2zmEV3GJbOiKT6z61LkZyS8cIPDPE'
             self.userid = None
             self.userid = self.register()
