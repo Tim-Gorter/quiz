@@ -209,6 +209,26 @@ class VisualManager():
             self.check.layout.display = 'block'
             self.check.layout.visibility = 'visible'
 
+        if self.currentQuiz.getCurrentQuestion().isInfo():
+            self.qans_lbl.layout.visibility = 'hidden'
+            self.qans_lbl.layout.display = 'none'
+
+            self.writtenresp.layout.visibility = 'hidden'
+            self.writtenresp.layout.display = 'none'
+
+            self.choices.layout.visibility = 'hidden'
+            self.choices.layout.display = 'none'
+
+            self.display_only_answer.layout.visibility = 'hidden'
+            self.display_only_answer.layout.display = 'none'
+
+            self.component_output.layout.display = 'block'
+            self.component_output.layout.visibility = 'visible'
+
+            self.check.layout.visibility = 'hidden'
+            self.check.layout.display = 'none'
+
+
         if self.currentQuiz.getCurrentQuestion().isCustomQuestion():
             self.qans_lbl.layout.visibility = 'hidden'
             self.qans_lbl.layout.display = 'none'
@@ -282,9 +302,7 @@ class VisualManager():
                 s = '\x1b[5;30;41m' + "Incorrect. " + '\x1b[0m' +"\n" #red color
             answer_object = self.get_open_or_mchoice_answer_object(a, "multiple_choice", correct)
         elif self.currentQuiz.getCurrentQuestion().isProgrammingQuestion():
-            print("hier")
             feedback_lines, test_result, correct_keywords, total_keywords = ProgrammingQuestion.check_programming_question_answer(self.programmingQuestion, correct_answers[0]['tests'], correct_answers[0]['keywords'], correct_answers[0]['function_name'])
-            print(feedback_lines)
             s = feedback_lines
             answer_object = ProgrammingQuestion.get_programming_answer_object(self.programmingQuestion, test_result, correct_keywords, total_keywords)
         else:
@@ -292,7 +310,6 @@ class VisualManager():
             s = correct_answers[0]
             self.writtenresp.disabled = True
             answer_object = self.get_open_or_mchoice_answer_object(a, "open", True)
-        print("write feedback")
         with self.feedback_out:
             clear_output(wait=True)
             if not self.currentQuiz.getCurrentQuestion().IsMChoice():

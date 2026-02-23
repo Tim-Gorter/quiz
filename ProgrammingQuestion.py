@@ -48,31 +48,30 @@ class ProgrammingQuestion():
       count = 0
       for parameters, expected in tests.items():
         func = namespace[function_name]
-        # try:
-        print(parameters)
-        
-        params = eval(parameters, namespace)
-
-        if isinstance(params, tuple):
-            answer = func(*params)
-        elif parameters == "":
-            answer = func()
-        else:
-            answer = func(params)
-            
         try:
-            if isinstance(answer, np.ndarray):
-                answer = answer.tolist()
-        except:
-            pass
-        result[parameters] = {
-            'result': answer,
-            'expected': expected,
-            'correct': str(answer).strip() == str(expected).strip()
-        }
-        # except Exception as e:
-        #     s = str(e)
-        #     print("error: " + s)
+        
+          params = eval(parameters, namespace)
+
+          if isinstance(params, tuple):
+              answer = func(*params)
+          elif parameters == "":
+              answer = func()
+          else:
+              answer = func(params)
+              
+          try:
+              if isinstance(answer, np.ndarray):
+                  answer = answer.tolist()
+          except:
+              pass
+          result[parameters] = {
+              'result': answer,
+              'expected': expected,
+              'correct': str(answer).strip() == str(expected).strip()
+          }
+        except Exception as e:
+            s = str(e)
+            print("error: " + s)
       return result
 
     def test_programming_function_without_return(self, compiled_code, tests, function_name):
@@ -81,8 +80,6 @@ class ProgrammingQuestion():
         exec(compiled_code, namespace)
 
         func = namespace[function_name]
-        print("tests")
-        print(tests)
         for parameters, expected in tests.items():
 
             old_stdout = sys.stdout
@@ -123,8 +120,7 @@ class ProgrammingQuestion():
       total = total_tests + total_keywords
       total_correct = correct_tests + correct_keywords
 
-      feedback_lines = [f"Tests passed: {total_correct} out of {total}"
-                        "-----------------------------------------------------------"]
+      feedback_lines = [f"Tests passed: {total_correct} out of {total}"]
 
       # for inp, res in test_result.items():
       #     feedback_lines.append(f"Input: {inp}")
@@ -147,19 +143,16 @@ class ProgrammingQuestion():
       code_str = ''.join(code_lines)
       correct_keywords = self.get_correct_keywords(keywords, code_str)
       total_keywords = len(keywords)
-      # try:
-      if "def" not in code_str or "class" in code_str:
-        code_lines = code_str.splitlines()
-        indented_code = ["    " + line for line in code_lines]
-        code_str = "def default_function():\n" + "\n".join(indented_code)
-      compiled_code = compile (code_str, 'test', 'exec')
-      # except:
-      #   return 'Compile error, check your answer in the below cell', None, correct_keywords, total_keywords
-      print("hier")
-      print(code_str)
-      print(function_name)
+      try:
+        if "def" not in code_str or "class" in code_str:
+          code_lines = code_str.splitlines()
+          indented_code = ["    " + line for line in code_lines]
+          code_str = "def default_function():\n" + "\n".join(indented_code)
+        compiled_code = compile (code_str, 'test', 'exec')
+      except:
+        return 'Compile error, check your answer in the below cell', None, correct_keywords, total_keywords
+      
       if 'return' in code_str and "class" not in code_str:
-        print("return in")
         if function_name in code_str:
           test_result = self.test_programming_function(compiled_code, tests, function_name)
         else:
@@ -175,9 +168,7 @@ class ProgrammingQuestion():
                 'correct': False
             }
       else:
-         print("else!")
          test_result  = self.test_programming_function_without_return(compiled_code, tests, function_name)
-         print(test_result)
       feedback_lines = self.get_formatted_feedback(test_result, correct_keywords, total_keywords)
 
       return feedback_lines, test_result, correct_keywords, total_keywords

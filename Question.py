@@ -45,6 +45,9 @@ class Question():
 
     def isOpenQuestion(self):
         return self.type == 'open'
+
+    def isInfo(self):
+        return self.type == 'info'
     
     def get_component_name(self):
         return self.component

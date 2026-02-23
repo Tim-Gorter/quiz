@@ -190,15 +190,15 @@ class QuestionsList:
         # "parameters":[["MPG", "Acceleration"], "12.png"], 
         # "type":"custom",
         # "correctness":{}
-        # } 
-        # ,{
-        #     "title": "Lab exercises part 1",
-        #     "text":"Lab exercises",
-        #     "component": "Lab exercises",
-        #     "choices": "",
-        #     "type":"info",
-        #     "correctness":{}
-        # }     
+        # } ,
+        {
+            "title": "Lab exercises part 1",
+            "text":"Part 1. Basic Python (20-30 minutes)",
+            "component": "Python lab exercises",
+            "choices": "",
+            "type":"info",
+            "correctness":{}
+        },
         {
             "title": "1. Question 1",
             "text": "Write a function \"repeat_message\" that takes two inputs: a message (string) and a number (integer). The function should output the message the specified number of times.",
@@ -334,6 +334,13 @@ class QuestionsList:
                 "keywords": [""],
                 "function_name": "default_function"
             }
+        },        {
+            "title": "Lab exercises part 2",
+            "text":"Part 2. Object Orientation and Inheritence (20-30 minutes)",
+            "component": "Python lab exercises",
+            "choices": "",
+            "type":"info",
+            "correctness":{}
         },{
             "title": "2. Question 1",
             "text": "Implement a program that simulates the bouncing of a basketball, football, and tennis ball from an initial height of 100 meters. \nEach ball has a specific bounce ratio (0.8, 0.6, and 0.5 respectively).\nThe program should calculate and print the total distance each ball travels in the air until its bounce height falls below 1 meter.\nExplain how the Bounce() function calculates the distance traveled during each bounce, and how the while loop determines when to stop the simulation.\nCreate a Ball class as a superclass. Basketball, Football, and Tennisball are the subclasses that should inherit the superclass.",
@@ -347,6 +354,13 @@ class QuestionsList:
                 "keywords": ["class"],
                 "function_name": "default_function"
             }
+        },        {
+            "title": "Lab exercises part 3",
+            "text":"Part 3. Numpy (30 minutes)",
+            "component": "Python lab exercises",
+            "choices": "",
+            "type":"info",
+            "correctness":{}
         },{
             "title": "3. Question 1",
             "text": "Import the numpy package under the name np",
@@ -538,9 +552,16 @@ class QuestionsList:
                     "keywords": [],
                     "function_name": "moving_average"
                 }
+            },       {
+                "title": "Lab exercises part 4",
+                "text":"Part 4. Pandas (30 minutes) \n\nThe following code imports numpy and pandas. It imports the data from the url https://raw.githubusercontent.com/justmarkham/DAT8/master/data/chipotle.tsv. The it assigns it to a variable called chipo.\n\nimport pandas as pd\nurl = 'https://raw.githubusercontent.com/justmarkham/DAT8/master/data/chipotle.tsv'\nchipo = pd.read_csv(url, sep = '\\t')\nchipo",
+                "component": "Python lab exercises",
+                "choices": "",
+                "type":"info",
+                "correctness":{}
             },{
                 "title": "4. Question 1",
-                "text": "The following code imports numpy and pandas. It imports the data from the url https://raw.githubusercontent.com/justmarkham/DAT8/master/data/chipotle.tsv. The it assigns it to a variable called chipo.\n\nimport pandas as pd\nurl = 'https://raw.githubusercontent.com/justmarkham/DAT8/master/data/chipotle.tsv'\nchipo = pd.read_csv(url, sep = '\t')\nchipo\n\nImplement the following steps for the dataframe called \"chipo\":\nPrint the first 10 entries",
+                "text": "Implement the following steps for the dataframe called \"chipo\" (see Lab exercises part 4):\nPrint the first 10 entries",
                 "component": "Python lab exercises",
                 "choices": "",
                 "type": "programming",
@@ -566,7 +587,7 @@ class QuestionsList:
                 }
             },{
                 "title": "4. Question 2",
-                "text": "Implement the following steps for the dataframe called \"chipo\" (see question 1):\nPrint the number of observations in the dataset",
+                "text": "Implement the following steps for the dataframe called \"chipo\" (see Lab exercises part 4):\nPrint the number of observations in the dataset",
                 "component": "Python lab exercises",
                 "choices": "",
                 "type": "programming",
@@ -579,7 +600,7 @@ class QuestionsList:
                 }
             },{
                 "title": "4. Question 3",
-                "text": "Implement the following steps for the dataframe called \"chipo\" (see question 1):\nPrint the number of columns in the dataset",
+                "text": "Implement the following steps for the dataframe called \"chipo\" (see Lab exercises part 4):\nPrint the number of columns in the dataset",
                 "component": "Python lab exercises",
                 "choices": "",
                 "type": "programming",
@@ -592,7 +613,7 @@ class QuestionsList:
                 }
             },{
                 "title": "4. Question 4",
-                "text": "Implement the following steps for the dataframe called \"chipo\" (see question 1):\nPrint the name of all the columns.",
+                "text": "Implement the following steps for the dataframe called \"chipo\" (see Lab exercises part 4):\nPrint the name of all the columns.",
                 "component": "Python lab exercises",
                 "choices": "",
                 "type": "programming",
@@ -605,7 +626,7 @@ class QuestionsList:
                 }
             },{
                 "title": "4. Question 5",
-                "text": "Implement the following steps for the dataframe called \"chipo\" (see question 1):\nHow is the dataset indexed? Print the index",
+                "text": "Implement the following steps for the dataframe called \"chipo\" (see Lab exercises part 4):\nHow is the dataset indexed? Print the index",
                 "component": "Python lab exercises",
                 "choices": "",
                 "type": "programming",
@@ -618,7 +639,7 @@ class QuestionsList:
                 }
             },{
                 "title": "4. Question 6",
-                "text": "Implement the following steps for the dataframe called \"chipo\" (see question 1):\nPrint the most ordered item",
+                "text": "Implement the following steps for the dataframe called \"chipo\" (see Lab exercises part 4):\nPrint the most ordered item",
                 "component": "Python lab exercises",
                 "choices": "",
                 "type": "programming",
@@ -631,7 +652,7 @@ class QuestionsList:
                 }
             },{
                 "title": "4. Question 7",
-                "text": "Implement the following steps for the dataframe called \"chipo\" (see question 1):\nPrint how many items were ordered",
+                "text": "Implement the following steps for the dataframe called \"chipo\" (see Lab exercises part 4):\nPrint how many items were ordered",
                 "component": "Python lab exercises",
                 "choices": "",
                 "type": "programming",
@@ -644,7 +665,7 @@ class QuestionsList:
                 }
             },{
                 "title": "4. Question 8",
-                "text": "Implement the following steps for the dataframe called \"chipo\" (see question 1):\nPrint the most ordered item in the choice_description column",
+                "text": "Implement the following steps for the dataframe called \"chipo\" (see Lab exercises part 4):\nPrint the most ordered item in the choice_description column",
                 "component": "Python lab exercises",
                 "choices": "",
                 "type": "programming",
@@ -657,7 +678,7 @@ class QuestionsList:
                 }
             },{
                 "title": "4. Question 9",
-                "text": "Implement the following steps for the dataframe called \"chipo\" (see question 1):\nPrint how many items were ordered in total",
+                "text": "Implement the following steps for the dataframe called \"chipo\" (see Lab exercises part 4):\nPrint how many items were ordered in total",
                 "component": "Python lab exercises",
                 "choices": "",
                 "type": "programming",
@@ -670,7 +691,7 @@ class QuestionsList:
                 }
             },{
                 "title": "4. Question 10",
-                "text": "Implement the following steps for the dataframe called \"chipo\" (see question 1):\nTurn the item price into a float",
+                "text": "Implement the following steps for the dataframe called \"chipo\" (see Lab exercises part 4):\nTurn the item price into a float",
                 "component": "Python lab exercises",
                 "choices": "",
                 "type": "programming",
@@ -682,7 +703,7 @@ class QuestionsList:
                 }
             },{
                 "title": "4. Question 11",
-                "text": "Implement the following steps for the dataframe called \"chipo\" (see question 1):\nPrint how much the revenue was for the period in the dataset",
+                "text": "Implement the following steps for the dataframe called \"chipo\" (see Lab exercises part 4):\nPrint how much the revenue was for the period in the dataset",
                 "component": "Python lab exercises",
                 "choices": "",
                 "type": "programming",
@@ -695,7 +716,7 @@ class QuestionsList:
                 }
             },{
                 "title": "4. Question 12",
-                "text": "Implement the following steps for the dataframe called \"chipo\" (see question 1):\nPrint how many orders were made in the period?",
+                "text": "Implement the following steps for the dataframe called \"chipo\" (see Lab exercises part 4):\nPrint how many orders were made in the period?",
                 "component": "Python lab exercises",
                 "choices": "",
                 "type": "programming",
@@ -708,7 +729,7 @@ class QuestionsList:
                 }
             },{
                 "title": "4. Question 13",
-                "text": "Implement the following steps for the dataframe called \"chipo\" (see question 1):\nPrint the average amount per order?",
+                "text": "Implement the following steps for the dataframe called \"chipo\" (see Lab exercises part 4):\nPrint the average amount per order?",
                 "component": "Python lab exercises",
                 "choices": "",
                 "type": "programming",
@@ -721,7 +742,7 @@ class QuestionsList:
                 }
             },{
                 "title": "4. Question 14",
-                "text": "Implement the following steps for the dataframe called \"chipo\" (see question 1):\nPrint how many different items are sold?",
+                "text": "Implement the following steps for the dataframe called \"chipo\" (see Lab exercises part 4):\nPrint how many different items are sold?",
                 "component": "Python lab exercises",
                 "choices": "",
                 "type": "programming",
@@ -732,27 +753,14 @@ class QuestionsList:
                     "keywords": ["nunique"],
                     "function_name": "default_function"
                 }
-            }, 
-            {
-            "title": "1. Question 1",
-            "text": "Write a function \"repeat_message\" that takes two inputs: a message (string) and a number (integer). The function should output the message the specified number of times.",
-            "component": "Python lab exercises",
-            "choices": "",
-            "type":"programming",
-            "correctness":{
-                "tests": {
-                    "('Hello', 3)": "Hello\nHello\nHello\n",
-                    "('Test', 1)": "Test\n",
-                    "('nothing', 0)": "",
-                    },
-                "keywords": ["for", "in", "range","input", "print"],
-                "function_name": "repeat_message"
-                }
-        }
+            }
         ]
         
     def get_questions(self):
         return self.questions
+    
+    def get_questions_master_version(self):
+        return [q for q in self.questions if q.get("type") != "info"]
     
     def get_components(self):
         components = {q.get("component") for q in self.questions if "component" in q}

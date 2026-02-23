@@ -25,8 +25,9 @@ class SelectComponent:
         return self.vbox
     
     def hide(self):
-        self.component_list.layout.display = "none"
-        self.start_button.layout.display = "none"
+        None
+        # self.component_list.layout.display = "none"
+        # self.start_button.layout.display = "none"
         
     
     def start_quiz(self, value):
