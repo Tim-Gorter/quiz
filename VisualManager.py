@@ -20,7 +20,7 @@ class VisualManager():
         self.Qqsts.observe(self.open_question)
         self.description_out = widgets.Output()
         self.feedback_out = widgets.Output()
-        self.qans_lbl= widgets.Label(value="Answer:")
+        self.qans_lbl= widgets.Label(value="Your answer:")
         self.qans_lbl.layout.visibility = 'hidden'
         self.qans_lbl.layout.display = 'none'
         self.writtenresp = widgets.Textarea(value='')
@@ -136,6 +136,9 @@ class VisualManager():
             print(QText)
             print()
 
+        self.qans_lbl.layout.display = 'none'
+        self.qans_lbl.layout.visibility = 'hidden'
+
         if self.currentQuiz.getCurrentQuestion().IsMChoice():
             self.choices.layout.display = 'block'
             self.choices.layout.visibility = 'visible'
@@ -161,14 +164,8 @@ class VisualManager():
                 self.choices.value = autofill_answer
 
         if self.currentQuiz.getCurrentQuestion().isProgrammingQuestion():
-            self.qans_lbl.layout.display = 'block'
-            self.qans_lbl.layout.visibility = 'visible'
-
             self.choices.layout.display = 'none'
             self.choices.layout.visibility = 'hidden'
-
-            self.choices.layout.visibility = 'hidden'
-            self.choices.layout.display = 'none'
                 
             self.check.layout.display = 'block'
             self.check.layout.visibility = 'visible'
@@ -179,6 +176,8 @@ class VisualManager():
             self.component_output.layout.display = 'none'
 
             if autofill_answer is not None and autofill_answer != 'None':
+                self.qans_lbl.layout.display = 'block'
+                self.qans_lbl.layout.visibility = 'visible'
                 self.display_only_answer.value = autofill_answer
             else:
                 self.display_only_answer.value = '<body><font color="green">Enter your answer in the cell below.</font></body>'
@@ -237,9 +236,8 @@ class VisualManager():
                 clear_output(wait=True)
                 display(component_ui)
             
-
         with self.feedback_out:
-            clear_output(wait=True)
+            clear_output()
 
         # except Exception as e:
 
@@ -284,7 +282,9 @@ class VisualManager():
                 s = '\x1b[5;30;41m' + "Incorrect. " + '\x1b[0m' +"\n" #red color
             answer_object = self.get_open_or_mchoice_answer_object(a, "multiple_choice", correct)
         elif self.currentQuiz.getCurrentQuestion().isProgrammingQuestion():
+            print("hier")
             feedback_lines, test_result, correct_keywords, total_keywords = ProgrammingQuestion.check_programming_question_answer(self.programmingQuestion, correct_answers[0]['tests'], correct_answers[0]['keywords'], correct_answers[0]['function_name'])
+            print(feedback_lines)
             s = feedback_lines
             answer_object = ProgrammingQuestion.get_programming_answer_object(self.programmingQuestion, test_result, correct_keywords, total_keywords)
         else:
@@ -292,11 +292,14 @@ class VisualManager():
             s = correct_answers[0]
             self.writtenresp.disabled = True
             answer_object = self.get_open_or_mchoice_answer_object(a, "open", True)
-
+        print("write feedback")
         with self.feedback_out:
             clear_output(wait=True)
             if not self.currentQuiz.getCurrentQuestion().IsMChoice():
-                print('Correct Answer: ')
+                if self.currentQuiz.getCurrentQuestion().isProgrammingQuestion():
+                    print('Test results:')
+                else:
+                    print('Correct answer:')
             else:
                 s = 'Feedback: '+s
 

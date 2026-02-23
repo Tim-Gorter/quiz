@@ -1,5 +1,5 @@
 {
     "type": "multiple_choice",
-    "result": "incorrect",
-    "answer": "De uitspraak heeft tot gevolg dat elke variabele een vast type heeft."
+    "result": "correct",
+    "answer": "De uitspraak geldt voor zowel statische als dynamische typering."
 }

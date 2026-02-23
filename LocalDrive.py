@@ -1,10 +1,21 @@
 import os
 import random
 from datetime import datetime
+import numpy as np
 
 class GoogleDrive():
     def __init__(self):
        self.userid = 123
+
+    def _json_safe(self, obj):
+         if isinstance(obj, np.integer):
+               return int(obj)
+         if isinstance(obj, np.floating):
+               return float(obj)
+         if isinstance(obj, np.ndarray):
+               return obj.tolist()
+         
+         return str(obj)
     def login_correct(self,userid):
         if userid == '':
            return False
@@ -34,6 +45,6 @@ class GoogleDrive():
     def write_answer_to_file(self, answer, filename):
         import json
         with open(f"./drive/{self.userid}/{filename}", "w", encoding="utf-8") as f:
-            json.dump(answer, f, ensure_ascii=False, indent=4)
+            json.dump(answer, f, ensure_ascii=False, indent=4, default=self._json_safe)
       
       

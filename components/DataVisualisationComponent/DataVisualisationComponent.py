@@ -38,15 +38,15 @@ class DataVisualisationComponent():
     def on_submit(self, change):
         answer_obj = {}
         answer_obj["type"] = "custom"
+        answer_obj["answer"] = {}
         for key in self.dataType.keys():
             datatype = self.dataType[key]
-            answer_obj[key + "-datatype"] = datatype[0]
-            answer_obj[key + "-position"] = datatype[1]
+            answer_obj["answer"][key + "-datatype"] = datatype[0]
+            answer_obj["answer"][key + "-position"] = datatype[1]
 
-        answer_obj["marks"] = self.marks.value
-        answer_obj["position"] = self.pos.value
-        answer_obj["size"] = self.size.value
-        answer_obj["color"] = self.color.value
+        answer_obj["answer"]["marks"] = self.marks.value
+        answer_obj["answer"]["size"] = self.size.value
+        answer_obj["answer"]["color"] = self.color.value
         
 
         self.visualManager.submit_answer(answer_obj)
