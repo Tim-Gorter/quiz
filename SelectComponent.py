@@ -7,7 +7,8 @@ class SelectComponent:
         self.visualManager = visualManager
         questionlist = QuestionsList()
         self.component_list = widgets.Dropdown(
-            options=sorted(questionlist.get_components() + ["ML Dashboard"]),
+            options=sorted(questionlist.get_components()),
+            # options=sorted(questionlist.get_components() + ["ML Dashboard"]),
             disabled=False
         )
         
