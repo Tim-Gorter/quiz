@@ -7,10 +7,12 @@ import random
 import io
 import time
 import numpy as np
+import google_auth_httplib2
 
 
 class GoogleDrive:    
         def __init__(self):      
+            credentials, _ = default()
             http = httplib2.Http(timeout=60) 
             authed_http = google_auth_httplib2.AuthorizedHttp(credentials, http=http)
 
