@@ -260,7 +260,7 @@ class QuestionsList:
             "type": "programming",
             "correctness": {
                 "tests": {
-                    "": "2002\n2009\n2016\n2023\n2037\n2044"
+                    "": ["2002", "2009", "2016", "2023", "2037", "2044"]
                 },
                 "keywords": ["for", "in"],
                 "function_name": "default_function"
