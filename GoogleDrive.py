@@ -13,7 +13,7 @@ import threading
 
 
 class GoogleDrive:    
-        def __init__(self, visualManager):      
+        def __init__(self, visualManager=None):      
             self.drive_service = build('drive', 'v3')
             self.folderid = '1c8V2zmEV3GJbOiKT6z61LkZyS8cIPDPE'
             self.userid = None
@@ -207,5 +207,3 @@ class GoogleDrive:
 
             def set_userid(self,userid):
                 self.userid = userid
-                return
-            
