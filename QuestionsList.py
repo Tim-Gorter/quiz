@@ -293,7 +293,7 @@ class QuestionsList:
                         "expected": 3
                     }
                 ],
-                "keywords": ["for", "in", "print"],
+                "keywords": ["for", "in"],
                 "function_name": "countletter"
                 }
         },{
