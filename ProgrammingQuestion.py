@@ -49,14 +49,13 @@ class ProgrammingQuestion():
         for test in tests:
             try:
                 if test["type"] == "class_method":
-                    print(11)
                     cls_name = test["class_name"]
                     cls = namespace[cls_name]
                     instance = cls(eval(test["input"])) 
                     method = getattr(instance, test["method"])
                     output = method()
                     correct = str(test["expected"]) in str(output)
-                    print(output)
+                    
                     result[f"{cls_name}.{test['method']}"] = {
                         "result": output,
                         "expected": test["expected"],
