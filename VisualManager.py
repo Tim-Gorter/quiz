@@ -126,7 +126,6 @@ class VisualManager():
 
         if self.currentQuiz.getCurrentQuestion() is None:
            return
-        print("set status")
         self.getQsts().options = self.currentQuiz.getQuestionsWithStatus(self.drive.userid)
         
         # try:
