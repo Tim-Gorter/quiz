@@ -95,36 +95,27 @@ class ProgrammingQuestion():
       namespace = {}
       exec(compiled_function, namespace)
       count = 0
-      print(tests)
 
-      
+  
       for test in tests:
-        print(test)
-        print(109)
         if test["type"] == "output" or test["type"] == "return":
-          print("JA1")
           func = namespace[function_name]
           try:
-            print(9)
             parameters = test["input"]
             expected = test["expected"]
             params = eval(parameters, namespace)
-            print(8)
             if isinstance(params, tuple):
                 answer = func(*params)
             elif parameters == "":
                 answer = func()
             else:
                 answer = func(params)
-            print(5)
                 
             try:
                 if isinstance(answer, np.ndarray):
                     answer = answer.tolist()
             except:
                 pass
-            print(6)
-            print(2)
             result[parameters] = {
                 'result': answer,
                 'expected': expected,
@@ -133,8 +124,6 @@ class ProgrammingQuestion():
             }
           except Exception as e:
               s = str(e)
-              print(66)
-              print(test["name"])
               result[parameters] = {
                   'result': s,
                   'expected': expected,
@@ -170,8 +159,6 @@ class ProgrammingQuestion():
                   func(params)
             except Exception as e:
               s = str(e)
-              print(555)
-              print(test["name"])
               result[parameters] = {
                   'result': s,
                   'expected': expected,
@@ -242,22 +229,16 @@ class ProgrammingQuestion():
         compiled_code = compile (code_str, 'test', 'exec')
       except:
         return 'Compile error, check your answer in the below cell', None, correct_keywords, total_keywords
-      print(0)
+      
       if 'return' in code_str and "class" not in code_str:
         if function_name in code_str:
-          print(1)
           test_result = self.test_programming_function(compiled_code, tests, function_name)
         else:
-           print(2)
            pattern = r'^\s*def\s+([a-zA-Z_]\w*)\s*\('
            matches = re.findall(pattern, code_str, re.MULTILINE)
            if len(matches) == 1:
-              print(3)
               test_result = self.test_programming_function(compiled_code, tests, matches[0])
            else:
-              print(4)
-              print("Hallo?")
-              print(matches)
               test_result = {}       
               test_result[''] = {
                 'result': 'Error: no/multiple functions implemented',
