@@ -5,6 +5,7 @@ from IPython.display import clear_output, display
 from ProgrammingQuestion import ProgrammingQuestion
 import importlib
 from Quiz import Quiz
+import os
 
 class VisualManager():
     def __init__(self, drive, online_version):
@@ -60,7 +61,7 @@ class VisualManager():
         display_output = self.getQuizTab()
         currentQuiz = Quiz.open_quiz(display_output, component)
         self.setQuiz(currentQuiz)
-        self.getQsts().options = [x.getTitle() for x in currentQuiz.getQuestions()]
+        self.getQsts().options = currentQuiz.getQuestionsWithStatus(self.drive.userid)
         self.ui.children = [display_output]
         
     def start_ml_dashboard(self):
@@ -117,14 +118,17 @@ class VisualManager():
     def open_question(self, b):
         BOLD = '\033[1m'
         RESET = '\033[0m'
+        selected_value = self.Qqsts.value
         for qstn in self.currentQuiz.getQuestions():
-            if qstn.getTitle() == self.Qqsts.value:
+            if qstn.getTitle() == selected_value:
                 self.currentQuiz.setCurrentQuestion(qstn)
                 break
 
         if self.currentQuiz.getCurrentQuestion() is None:
            return
-
+        print("set status")
+        self.getQsts().options = self.currentQuiz.getQuestionsWithStatus(self.drive.userid)
+        
         # try:
         Qtitle = self.currentQuiz.getCurrentQuestion().getTitle()
         QText = self.currentQuiz.getCurrentQuestion().getText()
@@ -313,9 +317,7 @@ class VisualManager():
         with self.feedback_out:
             clear_output(wait=True)
             if not self.currentQuiz.getCurrentQuestion().IsMChoice():
-                if self.currentQuiz.getCurrentQuestion().isProgrammingQuestion():
-                    print('Test results:')
-                else:
+                if not self.currentQuiz.getCurrentQuestion().isProgrammingQuestion():
                     print('Correct answer:')
             else:
                 s = 'Feedback: '+s
@@ -330,6 +332,10 @@ class VisualManager():
           self.display_only_answer.value = autofill_answer
 
         self.drive.upload_log( question_title + ".json")
+        q_widget = self.getQsts()
+        current_value = q_widget.value
+        q_widget.options = self.currentQuiz.getQuestionsWithStatus(self.drive.userid)
+        q_widget.value = current_value
         return
     
     def submit_answer(self, answer):

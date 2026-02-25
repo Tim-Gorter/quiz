@@ -1,6 +1,8 @@
 import pandas as pd
 from Question import Question
 from QuestionsList import QuestionsList
+import os
+import json
 class Quiz():
     def __init__(self, name):
         self.name = name
@@ -12,6 +14,63 @@ class Quiz():
 
     def getQuestions(self):
         return self.questions
+    
+    def getQuestionsWithStatus(self, userid):
+        questions_with_status = []
+        for q in self.questions:
+            status = self.get_question_status(q.getTitle(), userid) 
+            label = f"{q.getTitle()}{status}" 
+            value = q.getTitle()              
+            questions_with_status.append((label, value))
+        return questions_with_status
+    
+    def get_question_status(self,question_name, userid):
+        answer_file = os.path.join("drive", str(userid), question_name + ".json")
+        if not os.path.exists(answer_file):
+            return ""  # no answer yet
+
+        with open(answer_file, 'r', encoding='utf-8') as f:
+            answer_data = json.load(f)
+
+        if answer_data["type"] in ["multiple_choice", "open"]:
+            if answer_data.get("result") == "correct":
+                return "✅"
+            elif answer_data.get("result") == "incorrect":
+                return "❌"
+            else:
+                return ""
+
+        if answer_data["type"] == "programming":
+            correct_keywords = answer_data.get("correct_keywords", 0)
+            total_keywords = answer_data.get("total_keywords", 0)
+
+            result_data = answer_data.get("result", {})
+
+            if result_data is None:
+                return "❌"
+            if not isinstance(result_data, dict):
+                result_data = {}
+
+            all_tests_passed = all(
+                v.get("correct", False)
+                for v in result_data.values()
+                if isinstance(v, dict)
+            )
+
+            any_test_passed = any(
+                v.get("correct", False)
+                for v in result_data.values()
+                if isinstance(v, dict)
+            )
+
+            if correct_keywords == total_keywords and all_tests_passed:
+                return "✅"
+            elif correct_keywords > 0 or any_test_passed:
+                return "~"
+            else:
+                return "❌"
+
+        return ""
 
     def setCurrentQuestion(self,myqst):
         self.currentQuestion = myqst

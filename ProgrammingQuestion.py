@@ -40,38 +40,109 @@ class ProgrammingQuestion():
     def get_correct_tests(self, results):
       return sum(1 for v in results.values() if v['correct'])
     
+
+    def test_class_question(self, compiled_code, tests):
+        result = {}
+        namespace = {}
+        exec(compiled_code, namespace)
+
+        for test in tests:
+            try:
+                if test["type"] == "class_method":
+                    print(11)
+                    cls_name = test["class_name"]
+                    cls = namespace[cls_name]
+                    instance = cls(eval(test["input"])) 
+                    method = getattr(instance, test["method"])
+                    output = method()
+                    correct = str(test["expected"]) in str(output)
+                    print(output)
+                    result[f"{cls_name}.{test['method']}"] = {
+                        "result": output,
+                        "expected": test["expected"],
+                        "correct": correct,
+                        "name": test["name"]
+                    }
+
+                elif test["type"] == "inheritance":
+                    cls_name = test["class_name"]
+                    parent_name = test["parent_class"]
+                    cls = namespace[cls_name]
+                    parent_cls = namespace[parent_name]
+                    correct = issubclass(cls, parent_cls)
+
+                    result[f"{cls_name} inherits {parent_name}"] = {
+                        "result": correct,
+                        "expected": True,
+                        "correct": correct,
+                        "name": test["name"]
+                    }
+
+            except Exception as e:
+                print(e)
+                result[test.get("name", "error")] = {
+                    "result": str(e),
+                    "expected": test.get("expected", ""),
+                    "correct": False,
+                    "name": test.get("name", "error")
+                }
+
+        return result
+
     def test_programming_function(self,compiled_function, tests, function_name):
       result = {}
 
       namespace = {}
       exec(compiled_function, namespace)
       count = 0
-      for parameters, expected in tests.items():
-        func = namespace[function_name]
-        try:
-        
-          params = eval(parameters, namespace)
+      print(tests)
 
-          if isinstance(params, tuple):
-              answer = func(*params)
-          elif parameters == "":
-              answer = func()
-          else:
-              answer = func(params)
-              
+      
+      for test in tests:
+        print(test)
+        print(109)
+        if test["type"] == "output" or test["type"] == "return":
+          print("JA1")
+          func = namespace[function_name]
           try:
-              if isinstance(answer, np.ndarray):
-                  answer = answer.tolist()
-          except:
-              pass
-          result[parameters] = {
-              'result': answer,
-              'expected': expected,
-              'correct': str(answer).strip() == str(expected).strip()
-          }
-        except Exception as e:
-            s = str(e)
-            print("error: " + s)
+            print(9)
+            parameters = test["input"]
+            expected = test["expected"]
+            params = eval(parameters, namespace)
+            print(8)
+            if isinstance(params, tuple):
+                answer = func(*params)
+            elif parameters == "":
+                answer = func()
+            else:
+                answer = func(params)
+            print(5)
+                
+            try:
+                if isinstance(answer, np.ndarray):
+                    answer = answer.tolist()
+            except:
+                pass
+            print(6)
+            print(2)
+            result[parameters] = {
+                'result': answer,
+                'expected': expected,
+                'correct': str(answer).strip() == str(expected).strip(),
+                'name': test["name"]
+            }
+          except Exception as e:
+              s = str(e)
+              print(66)
+              print(test["name"])
+              result[parameters] = {
+                  'result': s,
+                  'expected': expected,
+                  'correct': False,
+                  'name': test["name"]
+              }
+
+              print("error: " + s)
       return result
 
     def test_programming_function_without_return(self, compiled_code, tests, function_name):
@@ -80,8 +151,13 @@ class ProgrammingQuestion():
         exec(compiled_code, namespace)
 
         func = namespace[function_name]
-        for parameters, expected in tests.items():
 
+        for test in tests:
+          if test["type"] == "output" or test["type"] == "return":
+
+            parameters = test["input"]
+            expected = test["expected"]
+            
             old_stdout = sys.stdout
             sys.stdout = captured_output = io.StringIO()
             try:
@@ -93,7 +169,17 @@ class ProgrammingQuestion():
                 else:
                   func(params)
             except Exception as e:
-                captured_output.write(f"Error: {e}")
+              s = str(e)
+              print(555)
+              print(test["name"])
+              result[parameters] = {
+                  'result': s,
+                  'expected': expected,
+                  'correct': False,
+                  'name': test["name"]
+              }
+
+              print("error: " + s)
             finally:
                 sys.stdout = old_stdout
 
@@ -108,7 +194,8 @@ class ProgrammingQuestion():
             result[parameters] = {
                 'result': printed_output,
                 'expected': expected,
-                'correct': correct
+                'correct': correct,
+                'name': test["name"]
             }
 
         return result
@@ -120,14 +207,18 @@ class ProgrammingQuestion():
       total = total_tests + total_keywords
       total_correct = correct_tests + correct_keywords
 
-      feedback_lines = [f"Tests passed: {total_correct} out of {total}"]
-
-      # for inp, res in test_result.items():
-      #     feedback_lines.append(f"Input: {inp}")
-      #     feedback_lines.append(f"Expected Output: {res['expected']}")
-      #     feedback_lines.append(f"Received Output: {res['result']}")
-      #     feedback_lines.append(f"Correct: {res['correct']}")
-      #     feedback_lines.append("-----------------")
+      # feedback_lines = [f"Tests passed: {total_correct} out of {total}:"]
+      feedback_lines = [f"{correct_tests} out of {total_tests} tests passed:"]
+      for inp, res in test_result.items():
+          result = ""
+          if res['correct']:
+             result = "Passed"
+          else:
+             result = "Failed"
+             
+          feedback_lines.append(f"{result}: {res['name']}")
+      feedback_lines.append("")
+      feedback_lines.append(f"Answer contains {correct_keywords} out of {total_keywords} keywords")
 
       return "\n".join(feedback_lines)
 
@@ -144,31 +235,38 @@ class ProgrammingQuestion():
       correct_keywords = self.get_correct_keywords(keywords, code_str)
       total_keywords = len(keywords)
       try:
-        if "def" not in code_str or "class" in code_str:
+        if "def" not in code_str and "class" not in code_str:
           code_lines = code_str.splitlines()
           indented_code = ["    " + line for line in code_lines]
           code_str = "def default_function():\n" + "\n".join(indented_code)
         compiled_code = compile (code_str, 'test', 'exec')
       except:
         return 'Compile error, check your answer in the below cell', None, correct_keywords, total_keywords
-      
+      print(0)
       if 'return' in code_str and "class" not in code_str:
         if function_name in code_str:
+          print(1)
           test_result = self.test_programming_function(compiled_code, tests, function_name)
         else:
+           print(2)
            pattern = r'^\s*def\s+([a-zA-Z_]\w*)\s*\('
            matches = re.findall(pattern, code_str, re.MULTILINE)
            if len(matches) == 1:
+              print(3)
               test_result = self.test_programming_function(compiled_code, tests, matches[0])
            else:
+              print(4)
+              print("Hallo?")
+              print(matches)
               test_result = {}       
               test_result[''] = {
                 'result': 'Error: no/multiple functions implemented',
                 'expected': '',
-                'correct': False
+                'correct': False,
+                'name':"Error: no/multiple functions implemented"
             }
       else:
-         test_result  = self.test_programming_function_without_return(compiled_code, tests, function_name)
+         test_result  = self.test_class_question(compiled_code, tests)
       feedback_lines = self.get_formatted_feedback(test_result, correct_keywords, total_keywords)
 
       return feedback_lines, test_result, correct_keywords, total_keywords

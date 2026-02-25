@@ -201,17 +201,32 @@ class QuestionsList:
         },
         {
             "title": "1. Question 1",
-            "text": "Write a function \"repeat_message\" that takes two inputs: a message (string) and a number (integer). The function should output the message the specified number of times.",
+            "text": "Write a function \"repeat_message\" that takes two inputs: a message (string) and a number (integer). The function should print the message the specified number of times.",
             "component": "Python lab exercises",
             "choices": "",
             "type":"programming",
             "correctness":{
-                "tests": {
-                    "('Hello', 3)": "Hello\nHello\nHello\n",
-                    "('Test', 1)": "Test\n",
-                    "('nothing', 0)": "",
-                    },
-                "keywords": ["for", "in", "range","input", "print"],
+                "tests": [
+                            {
+                                "name": "Repeats message 3 times",
+                                "type": "return",
+                                "input": "('Hello', 3)",
+                                "expected": "Hello\nHello\nHello\n"
+                            },
+                            {
+                                "name": "Repeats message once",
+                                "type": "return",
+                                "input": "('Test', 1)",
+                                "expected": "Test\n"
+                            },
+                            {
+                                "name": "Zero repetitions prints nothing",
+                                "type": "return",
+                                "input": "('nothing', 0)",
+                                "expected": ""
+                            }
+                        ],
+                "keywords": ["for", "in", "print"],
                 "function_name": "repeat_message"
                 }
         },{
@@ -221,47 +236,81 @@ class QuestionsList:
             "choices": "",
             "type": "programming",
             "correctness": {
-                "tests": {
-                    "([1, 2, 3, 4, 5])": 3.0,
-                    "([10, 20, 30])": 20.0,
-                    "([7])": 7.0,
-                },
-                "keywords": ["for", "in", "len", "sum"],
+                "tests": [
+                    {
+                        "name": "Average of five numbers",
+                        "type": "return",
+                        "input": "([1, 2, 3, 4, 5])",
+                        "expected": 3.0
+                    },
+                    {
+                        "name": "Average of three numbers",
+                        "type": "return",
+                        "input": "([10, 20, 30])",
+                        "expected": 20.0
+                    },
+                    {
+                        "name": "Average of single number",
+                        "type": "return",
+                        "input": "([7])",
+                        "expected": 7.0
+                    }
+                ],
+                "keywords": ["for", "in"],
                 "function_name": "calculate_average"
             }
         }
         ,{
             "title": "1. Question 3",
-            "text": "Write a program (using a loop!) that counts the number of occurences of the word \"cat\" in the list [\"duck\", \"chicken\", \"mouse\", \"dog\", \"fox\", \"car\", \"cat\" ,\"cat\" ] ",
+            "text": "Write a program (using a loop!) that counts and prints the number of occurences of the word \"cat\" in the list [\"duck\", \"chicken\", \"mouse\", \"dog\", \"fox\", \"car\", \"cat\" ,\"cat\" ] ",
             "component": "Python lab exercises",
             "choices": "",
             "type":"programming",
             "correctness":{
-                "tests": {"":"2"},
-                "keywords": ["for", "in", "print"],
-                "function_name": "default_function"
+            "tests": [
+                {
+                    "name": "Counts occurrences of 'cat'",
+                    "type": "output",
+                    "input": "",
+                    "expected": "2\n"
                 }
+            ],
+            "keywords": ["for", "in", "print"],
+            "function_name": "default_function"
+            }
         },{
             "title": "1. Question 4",
-            "text": "Create a function called \"countletter\" that uses linear search to check that a given character is in a given string. More specifically, count the number of \"l\" in the phrase \"Hello, world!\" ",
+            "text": "Create a function called \"countletter\" that uses linear search to return how often a given character is in a given string. For example, count the number of \"l\" in the phrase \"Hello, world!\" ",
             "component": "Python lab exercises",
             "choices": "",
             "type":"programming",
             "correctness":{
-                "tests": {"('Hello world !', 'l')":3},
+                "tests": [
+                    {
+                        "name": "Counts letter occurrences",
+                        "type": "return",
+                        "input": "('Hello world !', 'l')",
+                        "expected": 3
+                    }
+                ],
                 "keywords": ["for", "in", "print"],
                 "function_name": "countletter"
                 }
         },{
             "title": "1. Question 5",
-            "text": "Write a program which will find all such numbers which are divisible by 7 but are not a multiple of 5, between 2000 and 2050 (both included).",
+            "text": "Write a program which prints all numbers which are divisible by 7 but are not a multiple of 5, between 2000 and 2080 (both included).",
             "component": "Python lab exercises",
             "choices": "",
             "type": "programming",
             "correctness": {
-                "tests": {
-                    "": ["2002", "2009", "2016", "2023", "2037", "2044"]
-                },
+                "tests": [
+                    {
+                        "name": "Print numbers divisible by 7 and not multiple of 5",
+                        "type": "output",
+                        "input": "",
+                        "expected": [2002, 2009, 2016, 2023, 2037, 2044]
+                    }
+                ],
                 "keywords": ["for", "in"],
                 "function_name": "default_function"
             }
@@ -273,9 +322,14 @@ class QuestionsList:
             "choices": "",
             "type": "programming",
             "correctness": {
-                "tests": {
-                    "": "[2002, 2009, 2016, 2023, 2037, 2044]"
-                },
+                "tests": [
+                    {
+                        "name": "List comprehension result",
+                        "type": "return",
+                        "input": "",
+                        "expected": [2002, 2009, 2016, 2023, 2037, 2044]
+                    }
+                ],
                 "keywords": ["for", "in", "[", "]"],
                 "function_name": "default_function"
             }
@@ -287,9 +341,14 @@ class QuestionsList:
             "choices": "",
             "type": "programming",
             "correctness": {
-                "tests": {
-                    "": "[2002, 2009, 2016, 2023, 2037, 2044]"
-                },
+                "tests": [
+                    {
+                        "name": "Map and lambda result",
+                        "type": "return",
+                        "input": "",
+                        "expected": [2002, 2009, 2016, 2023, 2037, 2044]
+                    }
+                ],
                 "keywords": ["lambda", "filter"],
                 "function_name": "default_function"
             }
@@ -301,10 +360,20 @@ class QuestionsList:
             "choices": "",
             "type": "programming",
             "correctness": {
-                "tests": {
-                    "(['abc', 'xyz', 'aba', '1221'])": 2,
-                    "(['abc', 'xyz', 'aba', '1221', 'jooj' , 'legermeetsysteelregel' , 'madam' , 'ikke' , 'gij' , 'fietser'])":5
-                },
+                "tests": [
+                    {
+                        "name": "Counts valid strings (example 1)",
+                        "type": "return",
+                        "input": "(['abc', 'xyz', 'aba', '1221'])",
+                        "expected": 2
+                    },
+                    {
+                        "name": "Counts valid strings (example 2)",
+                        "type": "return",
+                        "input": "(['abc', 'xyz', 'aba', '1221', 'jooj', 'legermeetsysteelregel', 'madam', 'ikke', 'gij', 'fietser'])",
+                        "expected": 5
+                    }
+                ],
                 "keywords": [],
                 "function_name": "count_strings"
             }
@@ -315,9 +384,14 @@ class QuestionsList:
             "choices": "",
             "type": "programming",
             "correctness": {
-                "tests": {
-                    "([0,1,2,3,4,5,6,7,8])": "[0, 1, 2, 4, 4, 6, 6, 7, 7, 8]",
-                },
+                "tests": [
+                    {
+                        "name": "Modifies list by reference",
+                        "type": "return",
+                        "input": "([0,1,2,3,4,5,6,7,8])",
+                        "expected": [0, 1, 2, 4, 4, 6, 6, 7, 7, 8]
+                    }
+                ],
                 "keywords": ["assert"],
                 "function_name": "modify_list"
             }
@@ -328,9 +402,14 @@ class QuestionsList:
             "choices": "",
             "type": "programming",
             "correctness": {
-                "tests": {
-                    "": "[(1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (2, 1), (2, 2), (2, 3), (2, 4), (2, 5), (2, 6), (3, 1), (3, 2), (3, 3), (3, 4), (3, 5), (3, 6), (4, 1), (4, 2), (4, 3), (4, 4), (4, 5), (4, 6), (5, 1), (5, 2), (5, 3), (5, 4), (5, 5), (5, 6), (6, 1), (6, 2), (6, 3), (6, 4), (6, 5), (6, 6)]",
+                "tests": [
+                {
+                    "name": "All dice combinations",
+                    "type": "return",
+                    "input": "",
+                    "expected": "[(1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (2, 1), (2, 2), (2, 3), (2, 4), (2, 5), (2, 6), (3, 1), (3, 2), (3, 3), (3, 4), (3, 5), (3, 6), (4, 1), (4, 2), (4, 3), (4, 4), (4, 5), (4, 6), (5, 1), (5, 2), (5, 3), (5, 4), (5, 5), (5, 6), (6, 1), (6, 2), (6, 3), (6, 4), (6, 5), (6, 6)]",
                 },
+                ],
                 "keywords": [""],
                 "function_name": "default_function"
             }
@@ -348,9 +427,50 @@ class QuestionsList:
             "choices": "",
             "type": "programming",
             "correctness": {
-                "tests": {
-                    "": ["890","396","296"]
-                },
+                "tests": [
+                    {
+                        "name": "Basketball total distance",
+                        "type": "class_method",
+                        "class_name": "Basketball",
+                        "input": "100",
+                        "method": "bounce",
+                        "expected": 890
+                    },
+                    {
+                        "name": "Football total distance",
+                        "type": "class_method",
+                        "class_name": "Football",
+                        "input": "100",
+                        "method": "bounce",
+                        "expected": 396
+                    },
+                    {
+                        "name": "Tennisball total distance",
+                        "type": "class_method",
+                        "class_name": "Tennisball",
+                        "input": "100",
+                        "method": "bounce",
+                        "expected": 296
+                    },
+                    {
+                        "name": "Basketball inherits Ball",
+                        "type": "inheritance",
+                        "class_name": "Basketball",
+                        "parent_class": "Ball"
+                    },
+                    {
+                        "name": "Football inherits Ball",
+                        "type": "inheritance",
+                        "class_name": "Football",
+                        "parent_class": "Ball"
+                    },
+                    {
+                        "name": "Tennisball inherits Ball",
+                        "type": "inheritance",
+                        "class_name": "Tennisball",
+                        "parent_class": "Ball"
+                    }
+                ],
                 "keywords": ["class"],
                 "function_name": "default_function"
             }
@@ -368,9 +488,7 @@ class QuestionsList:
             "choices": "",
             "type": "programming",
             "correctness": {
-                "tests": {
-                    "": []
-                },
+                "tests": [],
                 "keywords": ["import numpy as np"],
                 "function_name": "default_function"
             }
@@ -382,9 +500,7 @@ class QuestionsList:
             "choices": "",
             "type": "programming",
             "correctness": {
-                "tests": {
-                    "": []
-                },
+                "tests": [],
                 "keywords": ["np.zeros(10)"],
                 "function_name": "default_function"
             }
@@ -396,9 +512,7 @@ class QuestionsList:
             "choices": "",
             "type": "programming",
             "correctness": {
-                "tests": {
-                    "": []
-                },
+                "tests": [],
                 "keywords": ["np.zeros(10)","[4]"],
                 "function_name": "default_function"
             }
@@ -409,22 +523,25 @@ class QuestionsList:
             "choices": "",
             "type": "programming",
             "correctness": {
-                "tests": {
-                    "": []
-                },
+                "tests": [],
                 "keywords": ["np.arange(10,49)"],
                 "function_name": "default_function"
             }
         },{
             "title": "3. Question 5",
-            "text": "Find indices of non-zero elements from [1,2,0,0,4,0]",
+            "text": "Find indices of non-zero elements from np.array([1,2,0,0,4,0])",
             "component": "Python lab exercises",
             "choices": "",
             "type": "programming",
             "correctness": {
-                "tests": {
-                    "": ["0", "1", "4"]
-                },
+                "tests": [
+                    {
+                        "name": "Non-zero indices",
+                        "type": "output",
+                        "input": "",
+                        "expected": "0\n1\n4\n"
+                    }
+                ],
                 "keywords": ["[1,2,0,0,4,0]",],
                 "function_name": "default_function"
             }
@@ -435,9 +552,7 @@ class QuestionsList:
             "choices": "",
             "type": "programming",
             "correctness": {
-                "tests": {
-                    "": []
-                },
+                "tests": [],
                 "keywords": ["randn(10,10)","np.max","np.min"],
                 "function_name": "default_function"
             }
@@ -448,9 +563,7 @@ class QuestionsList:
             "choices": "",
             "type": "programming",
             "correctness": {
-                "tests": {
-                    "": []
-                },
+                "tests": [],
                 "keywords": ["random.randn(30)","mean("],
                 "function_name": "default_function"
             }
@@ -461,9 +574,7 @@ class QuestionsList:
             "choices": "",
             "type": "programming",
             "correctness": {
-                "tests": {
-                    "": []
-                },
+                "tests":[],
                 "keywords": ["random.randn(10)","sort("],
                 "function_name": "default_function"
             }
@@ -474,9 +585,8 @@ class QuestionsList:
             "choices": "",
             "type": "programming",
             "correctness": {
-                "tests": {
-                    "": []
-                },
+                "tests": []
+                ,
                 "keywords": ["random.randn(10)","]=0",],
                 "function_name": "default_function"
             }
@@ -487,9 +597,8 @@ class QuestionsList:
             "choices": "",
             "type": "programming",
             "correctness": {
-                "tests": {
-                    "": []
-                },
+                "tests": []
+                ,
                 "keywords": ["random.randn"],
                 "function_name": "default_function"
             }
@@ -501,9 +610,8 @@ class QuestionsList:
             "choices": "",
             "type": "programming",
             "correctness": {
-                "tests": {
-                    "": []
-                },
+                "tests": []
+                ,
                 "keywords": ["vectorize(maxx)","[1,4,5,6,9]","[9,3,3,9,11]"],
                 "function_name": "default_function"
             }
@@ -514,9 +622,14 @@ class QuestionsList:
             "choices": "",
             "type": "programming",
             "correctness": {
-                "tests": {
-                    "": [""]
-                },
+                "tests": [
+                    {
+                        "name": "Matching positions",
+                        "type": "output",
+                        "input": "",
+                        "expected": "1\n3\n5\n7\n"
+                    }
+                ],
                 "keywords": ["where(a==b)"],
                 "function_name": "default_function"
             }
@@ -527,12 +640,32 @@ class QuestionsList:
                 "choices": "",
                 "type": "programming",
                 "correctness": {
-                    "tests": {
-                        "([1, 2, 4, 8, 9, 10], 5)": 4,
-                        "([1, 3, 7, 8], 6)": 7,
-                        "([2, 5, 6, 12], 10)": 12,
-                        "([0, 20, 50], 18)": 20
+                    "tests": [
+                    {
+                        "name": "Nearest value test 1",
+                        "type": "return",
+                        "input": "([1, 2, 4, 8, 9, 10], 5)",
+                        "expected": 4
                     },
+                    {
+                        "name": "Nearest value test 2",
+                        "type": "return",
+                        "input": "([1, 3, 7, 8], 6)",
+                        "expected": 7
+                    },
+                    {
+                        "name": "Nearest value test 3",
+                        "type": "return",
+                        "input": "([2, 5, 6, 12], 10)",
+                        "expected": 12
+                    },
+                    {
+                        "name": "Nearest value test 4",
+                        "type": "return",
+                        "input": "([0, 20, 50], 18)",
+                        "expected": 20
+                    }
+                ],
                     "keywords": [],
                     "function_name": "find_nearest_value"
                 }
@@ -543,12 +676,32 @@ class QuestionsList:
                 "choices": "",
                 "type": "programming",
                 "correctness": {
-                    "tests": {
-                        "([0.4459046, -0.10303952, 0.93106738, 1.40359842], 3)": [0.42464415333333333, 0.7438754266666666],
-                        "([1, 2, 3, 4, 5], 2)": [1.5, 2.5, 3.5, 4.5],
-                        "([10, 20, 30, 40], 3)": [20.0, 30.0],
-                        "([5, 5, 5, 5], 4)": [5.0]
-                    },
+                    "tests": [
+                        {
+                            "name": "Moving average example",
+                            "type": "return",
+                            "input": "([0.4459046, -0.10303952, 0.93106738, 1.40359842], 3)",
+                            "expected": [0.42464415333333333, 0.7438754266666666]
+                        },
+                        {
+                            "name": "Moving average test 2",
+                            "type": "return",
+                            "input": "([1, 2, 3, 4, 5], 2)",
+                            "expected": [1.5, 2.5, 3.5, 4.5]
+                        },
+                        {
+                            "name": "Moving average test 3",
+                            "type": "return",
+                            "input": "([10, 20, 30, 40], 3)",
+                            "expected": [20.0, 30.0]
+                        },
+                        {
+                            "name": "Moving average test 4",
+                            "type": "return",
+                            "input": "([5, 5, 5, 5], 4)",
+                            "expected": [5.0]
+                        }
+                    ],
                     "keywords": [],
                     "function_name": "moving_average"
                 }
@@ -566,8 +719,12 @@ class QuestionsList:
                 "choices": "",
                 "type": "programming",
                 "correctness": {
-                    "tests": {
-                        "": [
+                    "tests": [
+                        {
+                            "name": "Print first 10 entries",
+                            "type": "output",
+                            "input": "",
+                            "expected": [
                                 "Chips and Fresh Tomato Salsa",
                                 "Izze",
                                 "Nantucket Nectar",
@@ -580,8 +737,9 @@ class QuestionsList:
                                 "$3.39",
                                 "[Clementine]",
                                 "[Apple]"
-                            ],
-                    },
+                                ]
+                        }
+                    ],
                     "keywords": [".head(10)"],
                     "function_name": "default_function"
                 }
@@ -592,9 +750,14 @@ class QuestionsList:
                 "choices": "",
                 "type": "programming",
                 "correctness": {
-                    "tests": {
-                        "": ["4622"],
-                    },
+                    "tests": [
+                        {
+                            "name": "Number of observations",
+                            "type": "output",
+                            "input": "",
+                            "expected": "4622"
+                        }
+                    ],
                     "keywords": [".shape[0]"],
                     "function_name": "default_function"
                 }
@@ -605,9 +768,14 @@ class QuestionsList:
                 "choices": "",
                 "type": "programming",
                 "correctness": {
-                    "tests": {
-                        "": ["5"],
-                    },
+                    "tests": [
+                        {
+                            "name": "Number of columns",
+                            "type": "output",
+                            "input": "",
+                            "expected": "5"
+                        }
+                    ],
                     "keywords": [".shape[1]"],
                     "function_name": "default_function"
                 }
@@ -618,9 +786,14 @@ class QuestionsList:
                 "choices": "",
                 "type": "programming",
                 "correctness": {
-                    "tests": {
-                        "": ["order_id", "quantity", "item_name", "choice_description", "item_price"],
-                    },
+                    "tests": [
+                        {
+                            "name": "Column names",
+                            "type": "output",
+                            "input": "",
+                            "expected": ["order_id", "quantity", "item_name", "choice_description", "item_price"],
+                        }
+                    ],
                     "keywords": ["columns.tolist()"],
                     "function_name": "default_function"
                 }
@@ -631,9 +804,14 @@ class QuestionsList:
                 "choices": "",
                 "type": "programming",
                 "correctness": {
-                    "tests": {
-                        "": ["RangeIndex(start=0, stop=4622, step=1)"],
-                    },
+                    "tests": [
+                        {
+                            "name": "Print index",
+                            "type": "output",
+                            "input": "",
+                            "expected": ["RangeIndex(start=0, stop=4622, step=1)"],
+                        }
+                    ],
                     "keywords": [".index"],
                     "function_name": "default_function"
                 }
@@ -644,9 +822,14 @@ class QuestionsList:
                 "choices": "",
                 "type": "programming",
                 "correctness": {
-                    "tests": {
-                        "": ["Chicken Bowl"],
-                    },
+                    "tests": [
+                        {
+                            "name": "Most ordered item",
+                            "type": "output",
+                            "input": "",
+                            "expected": "Chicken Bowl"
+                        }
+                    ],
                     "keywords": [".value_counts()"],
                     "function_name": "default_function"
                 }
@@ -657,9 +840,14 @@ class QuestionsList:
                 "choices": "",
                 "type": "programming",
                 "correctness": {
-                    "tests": {
-                        "": ["726"],
-                    },
+                    "tests": [
+                        {
+                            "name": "Number of most ordered items",
+                            "type": "output",
+                            "input": "",
+                            "expected": "726"
+                        }
+                    ],
                     "keywords": ["iloc[0]"],
                     "function_name": "default_function"
                 }
@@ -670,9 +858,14 @@ class QuestionsList:
                 "choices": "",
                 "type": "programming",
                 "correctness": {
-                    "tests": {
-                        "": ["Diet Coke"],
-                    },
+                    "tests": [
+                        {
+                            "name": "Most ordered choice description",
+                            "type": "output",
+                            "input": "",
+                            "expected": "Diet Coke"
+                        }
+                    ],
                     "keywords": ["value_counts()", "index[0]"],
                     "function_name": "default_function"
                 }
@@ -683,9 +876,14 @@ class QuestionsList:
                 "choices": "",
                 "type": "programming",
                 "correctness": {
-                    "tests": {
-                        "": ["4972"],
-                    },
+                    "tests": [
+                        {
+                            "name": "Total number of items ordered",
+                            "type": "output",
+                            "input": "",
+                        "expected": ["4972"],
+                        }
+                    ],
                     "keywords": ["sum"],
                     "function_name": "default_function"
                 }
@@ -696,8 +894,7 @@ class QuestionsList:
                 "choices": "",
                 "type": "programming",
                 "correctness": {
-                    "tests": {
-                    },
+                    "tests": [],
                     "keywords": ["replace", "astype(float)"],
                     "function_name": "default_function"
                 }
@@ -708,9 +905,14 @@ class QuestionsList:
                 "choices": "",
                 "type": "programming",
                 "correctness": {
-                    "tests": {
-                        "": ["39237"],
-                    },
+                    "tests": [
+                        {
+                            "name": "Total revenue",
+                            "type": "output",
+                            "input": "",
+                            "expected": ["39237"],
+                        }
+                    ],
                     "keywords": ["sum", "quantity", "item_price"],
                     "function_name": "default_function"
                 }
@@ -721,9 +923,14 @@ class QuestionsList:
                 "choices": "",
                 "type": "programming",
                 "correctness": {
-                    "tests": {
-                        "": ["1834"],
-                    },
+                    "tests": [
+                        {
+                            "name": "Number of orders",
+                            "type": "output",
+                            "input": "",
+                            "expected": ["1834"],
+                        }
+                    ],
                     "keywords": ["nunique"],
                     "function_name": "default_function"
                 }
@@ -734,9 +941,14 @@ class QuestionsList:
                 "choices": "",
                 "type": "programming",
                 "correctness": {
-                    "tests": {
-                        "": ["21"],
-                    },
+                    "tests": [
+                        {
+                            "name": "Average amount per order",
+                            "type": "output",
+                            "input": "",
+                            "expected": ["21"],
+                        }
+                    ],
                     "keywords": [],
                     "function_name": "default_function"
                 }
@@ -747,9 +959,14 @@ class QuestionsList:
                 "choices": "",
                 "type": "programming",
                 "correctness": {
-                    "tests": {
-                        "": ["50"],
-                    },
+                    "tests": [
+                        {
+                            "name": "Number of different items",
+                            "type": "output",
+                            "input": "",
+                            "expected": ["50"],
+                        }
+                    ],
                     "keywords": ["nunique"],
                     "function_name": "default_function"
                 }
